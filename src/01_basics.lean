@@ -216,7 +216,11 @@ end
   Theorems
 -/
 
-lemma mynat.add_assoc (a b : mynat) : a + b = b + a :=
+lemma mynat.zero_add (a : mynat) : 0 + a = a :=
+begin
+end
+
+lemma mynat.add_comm (a b : mynat) : a + b = b + a :=
 begin
 end
 
@@ -224,13 +228,13 @@ lemma mynat.add_assoc (a b c : mynat) : a + b + c = a + (b + c) :=
 begin
 end
 
-lemma mynat.eq_iff_succ_eq_succ (a b : mynat) : succ a = succ b → a = b :=
-begin
-end
-
 -- It's boring to write (a b c : mynat) every time.
 section
 variables (a b c : mynat)
+
+lemma mynat.eq_iff_succ_eq_succ : succ a = succ b → a = b :=
+begin
+end
 
 lemma mynat.add_cancel_right : a + c = b + c → a = b :=
 begin
