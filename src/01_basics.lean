@@ -29,6 +29,10 @@ def square'' : ℕ → ℕ
 
 example (x : ℕ) : ℕ := square'' (2*x)
 
+#check ℕ → ℕ
+#check ∀ x : ℕ, x = x
+#check Π n : ℕ, array n ℕ
+
 
 /-
   Polymorphic definitions
