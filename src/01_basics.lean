@@ -188,6 +188,7 @@ x + x
 #check double (7 : mynat)
 
 
+
 /-
   Logical connectives
 -/
@@ -217,12 +218,67 @@ end
 
 
 /-
-  Theorems
+  Tactics produce either a single new tactic state, or fail.
+
+  A tactic state is essentially a list of goals.
 -/
 
-lemma mynat.zero_add (a : mynat) : 0 + a = a :=
+lemma p1_1 {a b : Prop} : a → b → b ∧ a :=
 begin
+  intros ha hb,
+  apply and.intro,
+  assumption,
+  assumption,
 end
+
+-- we can freely mix tactics and expressions
+#check fin.mk -- (fin n) are the natural numbers less than n
+example (n : ℕ) : fin (2*n + 7) :=
+fin.mk n (begin end)  -- failing tactics are underlined in red
+
+lemma p1_2 {a b : Prop} : a → b → b ∧ a :=
+begin
+  intros ha hb,
+  apply and.intro,
+  -- repeats a tactic until it fails
+  repeat { assumption },
+end
+
+lemma p1_6 {a b : Prop} : a → b → b ∧ a :=
+-- ; executes the right tactic on all new goals
+by intros ha hb; apply and.intro; assumption
+
+lemma p2 (x : ℕ) : true ∧ x = x :=
+-- the orelse (<|>) operator allows backtracking
+by constructor; trivial <|> refl
+
+/-
+  Rewriting
+-/
+
+lemma p3 (f : ℕ → ℕ) (a b : ℕ) (h : f (1 * (0 + a)) = f b) : f a = f (0 + b) :=
+begin
+-- The `rw` tactic takes a (quantified) equation and rewrites the goal using it
+  rw zero_add,
+-- You can also pass it multiple equations, and/or rewrite hypotheses
+  rw [zero_add, one_mul] at h,
+  assumption,
+end
+
+/-
+  Induction
+-/
+
+lemma mynat.zero_add {a : mynat} : 0 + a = a :=
+begin
+  induction a,
+end
+
+
+
+/-
+  Theorems
+-/
 
 lemma mynat.add_comm (a b : mynat) : a + b = b + a :=
 begin
